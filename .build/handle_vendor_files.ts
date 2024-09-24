@@ -3,7 +3,9 @@ import { glob } from "fast-glob"
 import { mkdir, readFile, writeFile, rm } from "fs/promises";
 import swc from "@swc/core";
 import postcss from 'postcss'
-import { postcssConfig } from "./postcss_config";
+
+import postcssConfig from "./postcss_config";
+import swcOptions from "./swc_config";
 
 export const handleVendorFiles = async () => {
   const vendorScripts = await glob('./src/assets/vendor/**/*.{js,ts}')
@@ -11,31 +13,7 @@ export const handleVendorFiles = async () => {
 
   const rawScripts = await readFile('./.prebuild/vendor.prebuild.js', 'utf8')
 
-  swc.transform(rawScripts, {
-    filename: 'test',
-    jsc: {
-      parser: {
-        syntax: 'typescript',
-      },
-      transform: {
-
-      },
-      minify: {
-        mangle: true,
-        format: {
-          comments: "all"
-        },
-        compress: {
-          defaults: true,
-          evaluate: true,
-          inline: 3,
-        },
-      },
-    },
-    env: {
-      targets: 'defaults'
-    }
-  }).then(async (output) => {
+  swc.transform(rawScripts, swcOptions).then(async (output) => {
     await rm('./.prebuild/vendor.prebuild.js')
     await writeFile('./.prebuild/vendor.bundle.js', output.code)
   })
