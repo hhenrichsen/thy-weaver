@@ -10,7 +10,7 @@ const { upgradeWebSocket, websocket } =
   createBunWebSocket<ServerWebSocket>()
 
 app.get('/', async (ctx) => {
-  const html = await Bun.file('./.prebuild/game.html').text()
+  const html = await Bun.file('./dist/index.html').text()
   const modifiedHtml = html.replace(
     '</head>',
     `<script async src="${server.url.href}dev"></script>\n</head>`
@@ -47,12 +47,16 @@ app.get(
       onOpen(event, ws) {
         ws.send('Hello from server!')
 
-        chokidar('./.prebuild/game.html',
+        chokidar('./dist/index.html',
           {
-            ignoreInitial: true
+            ignoreInitial: true,
+            awaitWriteFinish: true,
           }
         )
-          .on('all', (event, id) => {
+          .on('change', (event, id) => {
+            ws.send('update')
+          })
+          .on('add', (event, id) => {
             ws.send('update')
           })
       }

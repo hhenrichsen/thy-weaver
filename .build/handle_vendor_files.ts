@@ -1,31 +1,46 @@
 import concat from "concat";
 import { glob } from "fast-glob"
-import { mkdir, readFile, writeFile, rm } from "fs/promises";
 import swc from "@swc/core";
 import postcss from 'postcss'
-
+import { type Plugin } from "rollup";
 import postcssConfig from "./postcss_config";
 import swcOptions from "./swc_config";
+import { getBuildToml } from "./configuration";
+import { outputFile } from "fs-extra/esm";
+
+const config = getBuildToml()!
+const mode = process.env.NODE_ENV || 'development';
 
 export const handleVendorFiles = async () => {
-  const vendorScripts = await glob('./src/assets/vendor/**/*.{js,ts}')
-  await concat(vendorScripts, './.prebuild/vendor.prebuild.js')
+  return <Plugin>{
+    name: 'handle-vendor-files',
+    async buildStart() {
+      const vendorScripts = await glob(`${config.rollup.project_root}/${config.rollup.vendor.input}/**/*.{js,ts}`)
+      const rawScripts = await concat(vendorScripts) as string
 
-  const rawScripts = await readFile('./.prebuild/vendor.prebuild.js', 'utf8')
+      swc.transform(rawScripts, {
+        sourceMaps: mode === 'development',
+        ...swcOptions
+      }).then(async (output) => {
+        await Bun.write(`${config.rollup.output_dir}/${config.rollup.vendor.output_js}`, output.code)
 
-  swc.transform(rawScripts, swcOptions).then(async (output) => {
-    await rm('./.prebuild/vendor.prebuild.js')
-    await writeFile('./.prebuild/vendor.bundle.js', output.code)
-  })
+        if (output.map) {
+          await outputFile(`${config.rollup.output_dir}/${config.rollup.vendor.output_js}.map`, output.map)
+        }
+      })
 
-  const vendorStyles = await glob('./src/assets/vendor/**/*.css')
-  await concat(vendorStyles, './.prebuild/vendor.prebuild.css')
-  const rawStyles = await readFile('./.prebuild/vendor.prebuild.css', 'utf8')
+      const vendorStyles = await glob(`${config.rollup.project_root}/${config.rollup.vendor.input}/**/*.css`)
+      const rawStyles = await concat(vendorStyles) as string
 
-  postcss(postcssConfig.options.postcssOptions.plugins)
-    .process(rawStyles, { from: undefined })
-    .then(async (result) => {
-      await rm('./.prebuild/vendor.prebuild.css')
-      await writeFile('./.prebuild/vendor.bundle.css', result.css)
-    })
+      postcss(postcssConfig.options.postcssOptions.plugins)
+        .process(rawStyles, { from: undefined })
+        .then(async (result) => {
+          await outputFile(`${config.rollup.output_dir}/${config.rollup.vendor.output_css}`, result.css)
+
+          if (result.map) {
+            await Bun.write(`${config.rollup.output_dir}/${config.rollup.vendor.output_css}.map`, result.map.toString())
+          }
+        })
+    }
+  }
 }

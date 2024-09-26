@@ -1,0 +1,57 @@
+[build]
+watchDelay = 1000
+# See https://browsersl.ist/ for valid targets, don''t affect SugarCube pre-existing code
+target = 'defaults'
+
+[rollup]
+project_root = './src'
+output_dir = './.prebuilt'
+
+[rollup.app]
+input = "assets/index.ts"
+output = "scripts/app.bundle.js"
+
+[rollup.media]
+input = "assets/media"
+output = "media"
+
+[rollup.styles]
+output = "styles/app.bundle.css"
+
+[rollup.fonts]
+input = "assets/fonts"
+output = "fonts"
+
+[rollup.vendor]
+input = "assets/vendor"
+output_js = "scripts/vendor.bundle.js"
+output_css = "scripts/styles/vendor.bundle.css"
+
+[rollup_dist]
+watch_dir = "./.prebuilt"
+output_dir = "./dist"
+
+[rollup_dist.index]
+input = "./src/story"
+input_head = "./src/head-content.html"
+output = "index.html"
+
+[rollup_dist.media]
+input = "media"
+output = "media"
+
+[rollup_dist.scripts]
+input = "scripts"
+output = "scripts"
+
+[rollup_dist.styles]
+input = "scripts/styles"
+output = "styles"
+
+[rollup_dist.fonts]
+input = "fonts"
+output = "fonts"
+
+[rollup_dist.config_toml]
+input = "./src/config.toml"
+output = "config.toml"

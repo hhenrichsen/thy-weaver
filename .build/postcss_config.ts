@@ -4,6 +4,7 @@ import postcssImport from "postcss-import";
 import postcssAdvancedVariables from 'postcss-advanced-variables'
 import postcssColorModFunction from "postcss-color-mod-function";
 
+import { getBuildToml } from "./configuration";
 const mode = process.env.NODE_ENV || 'development';
 
 const postcssConfig = {
@@ -17,7 +18,7 @@ const postcssConfig = {
         postcssColorModFunction(),
         postcssLightningcss({
           //@ts-ignore
-          browsers: 'defaults',
+          browsers: getBuildToml().build.target,
           lightningcssOptions: {
             minify: mode === 'production',
             cssModules: false,
