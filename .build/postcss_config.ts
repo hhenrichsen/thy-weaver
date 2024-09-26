@@ -20,7 +20,7 @@ const postcssConfig = {
           browsers: 'defaults',
           lightningcssOptions: {
             minify: mode === 'production',
-            cssModules: true,
+            cssModules: false,
           }
         })
       ]

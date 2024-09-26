@@ -3,7 +3,11 @@
   "files.associations": {
     "*.css": "postcss"
   },
+  "tailwindCSS.includeLanguages": {
+    "twee3-sugarcube-2": "html"
+  },
   "emmet.includeLanguages": {
-    "postcss": "css"
-  }
+    "postcss": "css",
+    "twee3-sugarcube-2": "html"
+  },
 }
