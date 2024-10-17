@@ -35,7 +35,7 @@ export const rollupConfig: RollupOptions = {
     resolve({
       extensions: ['.ts', '.js'],
     }),
-    handleVendorFiles(),
+    //handleVendorFiles(),
     // Extract CSS and apply PostCSS transformations
     postcss({
       plugins: postcssConfig.options.postcssOptions.plugins,
