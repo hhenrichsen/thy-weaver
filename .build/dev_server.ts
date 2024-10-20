@@ -58,7 +58,9 @@ app.get(
 )
 
 app.get('/dev', async ctx => {
-  const output = await swcTransform('./.build/reload_agent.ts', swcConfig)
+  const output = await swcTransform('./.build/reload_agent.ts', {
+    ...swcConfig,
+  })
   return new Response(output.code, {
     headers: {
       'Content-Type': 'application/javascript',
@@ -80,7 +82,7 @@ app.get(
       onOpen(event, ws) {
         ws.send('Hello from server!')
 
-        devEvents.on('builded', () => {
+        devEvents.once('builded', () => {
           ws.send('update')
         })
       },

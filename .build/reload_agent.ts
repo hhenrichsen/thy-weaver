@@ -1,28 +1,45 @@
-// Create a new WebSocket connection
-const socket = new WebSocket('ws://localhost:3000/ws');
+let ws: WebSocket
+let retryCount = 0
+const maxRetries = 5
+const retryDelay = 1000
 
-// When the WebSocket is open, log a message
-socket.addEventListener('open', () => {
-    console.log('Connected to WebSocket server');
-});
+const connect = () => {
+  ws = new WebSocket('ws://localhost:3000/ws')
 
-// Listen for messages from the server
-socket.addEventListener('message', (event) => {
-    console.log('Message from server', event.data);
+  ws.addEventListener('open', () => {
+    console.info('[Dev Server]: Connected!')
+  })
 
-    // If the message is 'update', reload the page
-    if (event.data === 'update') {
-        console.log('Received update message. Reloading page...');
-        window.location.reload();
+  ws.addEventListener('message', message => {
+    console.info(`[Dev Server]: Message received:\n${message.data}`)
+
+    if (message.data == 'update') {
+      console.info(`[Dev Server]: Update trigger received, reloading page...`)
+      window.location.reload()
     }
-});
+  })
 
-// Handle WebSocket close event
-socket.addEventListener('close', () => {
-    console.log('WebSocket connection closed');
-});
+  ws.addEventListener('close', event => {
+    if (!event.wasClean && retryCount < maxRetries) {
+      retryConnection()
+    } else {
+      console.warn(`[Dev Server]: Connection closed. Reason:\n${event.reason}`)
+    }
+  })
+}
 
-// Handle WebSocket error event
-socket.addEventListener('error', (error) => {
-    console.error('WebSocket error:', error);
-});
+const retryConnection = () => {
+  retryCount++
+  setTimeout(() => {
+    if (retryCount <= maxRetries) {
+      console.info(
+        `[Dev Server] Connection lost, reconnection... (Attempt #${retryCount})`
+      )
+      connect()
+    } else {
+      console.error('[Dev Server] Max reconnection attempts reached. Giving up')
+    }
+  }, retryDelay)
+}
+
+connect()
