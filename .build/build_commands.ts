@@ -2,7 +2,7 @@ import { rollup } from 'rollup'
 
 import { rollupConfig } from './rollup_config'
 import { loadConfig } from './handle_config'
-import { move, open, opendir, openSync, rm } from 'fs-extra'
+import { emptyDir, move, open, opendir, openSync, rm } from 'fs-extra'
 import ora from 'ora'
 import pico from 'picocolors'
 
@@ -13,10 +13,6 @@ export const getSpinner = () => {
   return ora({
     prefixText: pico.bgBlue(pico.bold(' BUILDER ')),
   })
-}
-
-const getBuilderError = (error: string) => {
-  console.log(`${pico.bgRed(pico.bold(' ERROR '))} ${error}`)
 }
 
 export const runRollup = async () => {
@@ -67,6 +63,24 @@ export const moveFiles = async () => {
       ` ${pico.bgRed(
         pico.bold(' ERROR ')
       )} Failed to move media files:\n${error}\n`
+    )
+  }
+  try {
+    const duration = Date.now()
+    spinner.start('Moving font files...')
+
+    await move(
+      `${prebuildConfig.prebuilding_dir}/${distConfig.fonts.input_dir}`,
+      `${distConfig.output_dir}/${distConfig.fonts.output_dir}`
+    )
+    spinner.succeed(
+      `Font files moved in ${pico.yellow(`${Date.now() - duration}ms`)}`
+    )
+  } catch (error) {
+    spinner.fail(
+      ` ${pico.bgRed(
+        pico.bold(' ERROR ')
+      )} Failed to move font files:\n${error}\n`
     )
   }
 

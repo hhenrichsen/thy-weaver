@@ -2,6 +2,7 @@ import { Hono } from 'hono'
 import { serve, type ServerWebSocket } from 'bun'
 import { createBunWebSocket, serveStatic } from 'hono/bun'
 import { transformFile as swcTransform } from '@swc/core'
+import pico from 'picocolors'
 
 import { devEvents, devState } from './dev_state'
 import { loadConfig } from './handle_config'
@@ -20,6 +21,18 @@ const placeholder = `
 </body>
 </html>
 `
+
+const throwServerLog = (log: string) => {
+  console.log(`${pico.bgCyan(pico.bold(' DEV SERVER '))} ${log}`)
+}
+
+const throwServerError = (error: string) => {
+  console.log(
+    `${pico.bgCyan(pico.bold(' DEV SERVER '))} ${pico.bgRed(
+      pico.bold(' ERROR ')
+    )} ${error}`
+  )
+}
 
 const app = new Hono()
 const { upgradeWebSocket, websocket } = createBunWebSocket<ServerWebSocket>()
@@ -54,7 +67,7 @@ app.get(
   serveStatic({
     root: dist,
     onNotFound: (path, c) => {
-      console.log(`${path} is not found, you access ${c.req.path}`)
+      throwServerError(`${path} is not found, you access ${c.req.path}`)
     },
   })
 )
@@ -75,14 +88,14 @@ app.get(
   upgradeWebSocket(c => {
     return {
       onMessage(event, ws) {
-        console.log(`Message from client: ${event.data}`)
-        ws.send('Hello from server!')
+        throwServerLog(`Message from client: ${event.data}`)
       },
       onClose: () => {
-        console.log('Connection closed')
+        throwServerLog('Connecting with client lost')
       },
       onOpen(event, ws) {
         ws.send('Hello from server!')
+        throwServerLog('Client connected')
 
         devEvents.once('builded', () => {
           ws.send('update')
@@ -92,12 +105,18 @@ app.get(
   })
 )
 
-const server = serve({
-  fetch: app.fetch,
-  //@ts-expect-error
-  websocket,
-  hostname: config.dev_server!.hostname,
-  port: config.dev_server!.port,
-})
+let server
+
+try {
+  server = serve({
+    fetch: app.fetch,
+    //@ts-expect-error
+    websocket,
+    hostname: config.dev_server!.hostname,
+    port: config.dev_server!.port,
+  })
+} catch (error) {
+  throwServerError(error)
+}
 
 export { server }

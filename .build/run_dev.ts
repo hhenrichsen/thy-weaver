@@ -102,7 +102,7 @@ build().then(async firstResult => {
       )
       console.log(
         `${pico.yellow(
-          pico.bold(`Dev Server available at ${pico.cyan(server.url.href)}\n`)
+          pico.bold(`Dev Server available at ${pico.cyan(server.url.href)}`)
         )}\n`
       )
 
@@ -110,6 +110,6 @@ build().then(async firstResult => {
       updateState(result)
       devEvents.emit('builded')
 
-      console.log(pico.yellow(pico.bold('Waiting for file changes...')))
+      console.log(pico.yellow(pico.bold('Waiting for file changes...')), '\n')
     })
 })
