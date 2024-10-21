@@ -5,6 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "dev": "bunx cross-env NODE_ENV=development bun .build/run_dev.ts",
+    "builderDev": "bunx cross-env NODE_ENV=development bun --watch .build/run_dev.ts",
     "build": "bunx cross-env NODE_ENV=production bun .build/run_build.ts"
   },
   "keywords": [],

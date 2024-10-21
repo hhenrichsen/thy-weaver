@@ -9,7 +9,7 @@ import pico from 'picocolors'
 const mode = process.env.NODE_ENV || 'development'
 const config = await loadConfig()
 console.log(
-  `\n${pico.bgMagenta(pico.bold(' ThyWeaver - Running in dev mode '))}\n`
+  `\n${pico.bgMagenta(pico.bold(' ThyWeaver - Running in dev mode '))}ㅤ\n`
 )
 
 const handleTweegoSetup = async () => {
@@ -72,7 +72,7 @@ const build = async (): Promise<string> => {
     console.log(
       `\n${pico.bgGreen(
         pico.bold(` Build finished in ${Date.now() - duration}ms `)
-      )}\n`
+      )}ㅤ\n`
     )
     return resolve(code!)
   })
@@ -98,7 +98,7 @@ build().then(async firstResult => {
     .on('all', async (event, path) => {
       process.stdout.write('\x1Bc')
       console.log(
-        `\n${pico.bgMagenta(pico.bold(' ThyWeaver - Running in dev mode '))}`
+        `\n${pico.bgMagenta(pico.bold(' ThyWeaver - Running in dev mode '))}ㅤ`
       )
       console.log(
         `${pico.yellow(

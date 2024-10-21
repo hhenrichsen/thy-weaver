@@ -68,8 +68,8 @@ const build = async (): Promise<string> => {
   return new Promise(resolve => {
     console.log(
       `\n${pico.bgGreen(
-        pico.bold(` Build finished in ${Date.now() - duration}ms `)
-      )}\n`
+        pico.bold(` Build finished in ${Date.now() - duration}ms`)
+      )}ㅤ\n`
     )
     return resolve
   })
