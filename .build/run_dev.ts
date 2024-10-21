@@ -1,55 +1,93 @@
 import { setupTweego, Tweenode } from 'tweenode'
 import chokidar from 'chokidar'
-
+import spinner from 'ora'
 import { loadConfig } from './handle_config'
 import { devEvents, updateState } from './dev_state'
-import { moveFiles, runRollup } from './build_commands'
+import { getSpinner, moveFiles, runRollup } from './build_commands'
+import pico from 'picocolors'
 
 const mode = process.env.NODE_ENV || 'development'
 const config = await loadConfig()
+console.log(
+  `\n${pico.bgMagenta(pico.bold(' ThyWeaver - Running in dev mode '))}\n`
+)
 
-await setupTweego()
+const handleTweegoSetup = async () => {
+  const spinner = getSpinner()
+  spinner.start('Setting-up Tweego')
+  try {
+    await setupTweego()
+    spinner.succeed('Tweego installed')
+  } catch (error) {
+    spinner.fail(
+      ` ${pico.bgRed(pico.bold(' ERROR '))} Failed to setup Tweego:\n${error}\n`
+    )
+  }
+}
+
+await handleTweegoSetup()
 const tweego = new Tweenode()
 
 const runTweego = async () => {
+  const spinner = getSpinner()
   const distPath = config.builder!.dist!.output_dir
+  const duration = Date.now()
 
-  const result = await tweego.process({
-    input: {
-      storyDir: config.builder!.dist!.story.input_dir,
-      head: config.builder!.dist!.story.html_head,
-      modules: `${distPath}/${config.builder!.dist!.styles.output_dir}`,
-      additionalFlags: [
-        `${distPath}/${config.builder!.dist!.scripts.output_dir}`,
-      ],
-    },
-    output: {
-      mode: 'string',
-    },
-  })
+  spinner.start('Compiling story')
+  let result: string | undefined
+
+  try {
+    result = await tweego.process({
+      input: {
+        storyDir: config.builder!.dist!.story.input_dir,
+        head: config.builder!.dist!.story.html_head,
+        modules: `${distPath}/${config.builder!.dist!.styles.output_dir}`,
+        additionalFlags: [
+          `${distPath}/${config.builder!.dist!.scripts.output_dir}`,
+        ],
+      },
+      output: {
+        mode: 'string',
+      },
+    })
+    spinner.succeed(
+      `Story compiled in ${pico.yellow(`${Date.now() - duration}ms`)}`
+    )
+  } catch (error) {
+    spinner.fail(
+      ` ${pico.bgRed(pico.bold(' ERROR '))} Failed build story:\n${error}\n`
+    )
+  }
 
   return result
 }
 
 const build = async (): Promise<string> => {
   const duration = Date.now()
-  const rollup = await runRollup()
+  await runRollup()
   await moveFiles()
   const code = await runTweego()
 
   return new Promise(resolve => {
-    console.log(`Rollup finished in ${rollup.duration}ms`)
-    console.log('BUILD!')
-
-    console.log(`Build took ${Date.now() - duration}ms`)
+    console.log(
+      `\n${pico.bgGreen(
+        pico.bold(` Build finished in ${Date.now() - duration}ms `)
+      )}\n`
+    )
     return resolve(code!)
   })
 }
 
 build().then(async firstResult => {
   updateState(firstResult)
-  await import('./dev_server')
+  const { server } = await import('./dev_server')
 
+  console.log(pico.yellow(pico.bold('Waiting for file changes...')))
+  console.log(
+    `${pico.yellow(
+      pico.bold(`Dev Server available at ${pico.cyan(server.url.href)}`)
+    )}\n`
+  )
   chokidar
     .watch(config.builder!.prebuilding!.project_root, {
       ignoreInitial: true,
@@ -58,8 +96,20 @@ build().then(async firstResult => {
       },
     })
     .on('all', async (event, path) => {
+      process.stdout.write('\x1Bc')
+      console.log(
+        `\n${pico.bgMagenta(pico.bold(' ThyWeaver - Running in dev mode '))}`
+      )
+      console.log(
+        `${pico.yellow(
+          pico.bold(`Dev Server available at ${pico.cyan(server.url.href)}\n`)
+        )}\n`
+      )
+
       const result = await build()
       updateState(result)
       devEvents.emit('builded')
+
+      console.log(pico.yellow(pico.bold('Waiting for file changes...')))
     })
 })

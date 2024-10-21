@@ -100,4 +100,4 @@ const server = serve({
   port: config.dev_server!.port,
 })
 
-console.log(server.url.href)
+export { server }
