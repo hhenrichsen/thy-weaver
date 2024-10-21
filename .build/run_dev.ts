@@ -5,7 +5,6 @@ import { move } from 'fs-extra/esm'
 import { rm } from 'node:fs/promises'
 
 import { loadConfig } from './handle_config'
-import './dev_server'
 import { rollupConfig } from './rollup_config'
 import { devEvents, updateState } from './dev_state'
 
@@ -96,8 +95,9 @@ const build = async (): Promise<string> => {
   })
 }
 
-build().then(firstResult => {
+build().then(async firstResult => {
   updateState(firstResult)
+  await import('./dev_server')
 
   chokidar
     .watch(config.builder!.prebuilding!.project_root, {

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "dev": "bun cross-env NODE_ENV=development bun --watch .build/run_dev.ts",
-    "build": "bun cross-env NODE_ENV=production bun --watch .build/run_dev.ts"
+    "dev": "bunx cross-env NODE_ENV=development bun --watch .build/run_dev.ts",
+    "build": "bunx cross-env NODE_ENV=production bun --watch .build/run_dev.ts"
   },
   "keywords": [],
   "author": "",
