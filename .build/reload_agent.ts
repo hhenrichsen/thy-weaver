@@ -4,7 +4,7 @@ const maxRetries = 5
 const retryDelay = 1000
 
 const connect = () => {
-  ws = new WebSocket('ws://localhost:3000/ws')
+  ws = new WebSocket(`ws://${window.location.host}/ws`)
 
   ws.addEventListener('open', () => {
     console.info('[Dev Server]: Connected!')

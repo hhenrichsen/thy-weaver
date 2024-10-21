@@ -2,10 +2,12 @@ import { Hono } from 'hono'
 import { serve, type ServerWebSocket } from 'bun'
 import { createBunWebSocket, serveStatic } from 'hono/bun'
 import { transformFile as swcTransform } from '@swc/core'
-import swcConfig from './swc_config'
-import { getBuildToml } from './configuration'
 
-const config = getBuildToml()!
+import { devEvents, devState } from './dev_state'
+import { loadConfig } from './handle_config'
+import swcConfig from './swc_config'
+
+const config = await loadConfig()
 
 const placeholder = `
 <!DOCTYPE html>
@@ -18,8 +20,6 @@ const placeholder = `
 </body>
 </html>
 `
-
-import { devEvents, devState } from './dev_store'
 
 const app = new Hono()
 const { upgradeWebSocket, websocket } = createBunWebSocket<ServerWebSocket>()
@@ -37,20 +37,22 @@ app.get('/', async ctx => {
   })
 })
 
+const dist = config.builder!.dist!.output_dir
+
 app.get(
   '*',
   serveStatic({
-    root: './dist/scripts',
+    root: `${dist}/scripts`,
   }),
   serveStatic({
-    root: './dist/styles',
+    root: `${dist}/styles`,
   })
 )
 
 app.get(
   '/media/*',
   serveStatic({
-    root: './dist',
+    root: dist,
     onNotFound: (path, c) => {
       console.log(`${path} is not found, you access ${c.req.path}`)
     },
@@ -94,6 +96,8 @@ const server = serve({
   fetch: app.fetch,
   //@ts-expect-error
   websocket,
+  hostname: config.dev_server!.hostname,
+  port: config.dev_server!.port,
 })
 
 console.log(server.url.href)

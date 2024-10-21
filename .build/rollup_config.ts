@@ -1,33 +1,39 @@
-import postcss from 'rollup-plugin-postcss';
-import { rollup, type RollupOptions } from 'rollup';
-import swc from '@rollup/plugin-swc';
-import resolve from '@rollup/plugin-node-resolve';
-import postcssConfig from "./postcss_config";
-import swcOptions from './swc_config';
-import { getBuildToml } from './configuration';
+import postcss from 'rollup-plugin-postcss'
+import type { RollupOptions } from 'rollup'
+import swc from '@rollup/plugin-swc'
+import resolve from '@rollup/plugin-node-resolve'
 import copy, { type CopyOptions } from 'rollup-plugin-copy'
-import { handleVendorFiles } from "./handle_vendor_files";
-const config = getBuildToml()!
-const mode = process.env.NODE_ENV || 'development';
+
+import postcssConfig from './postcss_config'
+import swcOptions from './swc_config'
+import { handleVendorFiles } from './handle_vendor_files'
+import { loadConfig } from './handle_config'
+
+const mode = process.env.NODE_ENV || 'development'
+
+const config = await loadConfig()
+
+const projectRoot = config.builder!.prebuilding!.project_root
+const prebuildDir = config.builder!.prebuilding!.prebuilding_dir
 
 const copyOptions: CopyOptions = {
   targets: [
     {
-      src: `${config.rollup.project_root}/${config.rollup.media.input}/**`,
-      dest: `${config.rollup.output_dir}/${config.rollup.media.output}`,
+      src: `${projectRoot}/${config.builder!.prebuilding!.media.input_dir}/**`,
+      dest: `${prebuildDir}/${config.builder!.prebuilding!.media.output_dir}`,
     },
     {
-      src: `${config.rollup.project_root}/${config.rollup.fonts.input}/**`,
-      dest: `${config.rollup.output_dir}/${config.rollup.fonts.output}`,
-    }
-  ]
+      src: `${projectRoot}/${config.builder!.prebuilding!.fonts.input_dir}/**`,
+      dest: `${prebuildDir}/${config.builder!.prebuilding!.fonts.output_dir!}`,
+    },
+  ],
 }
 
 export const rollupConfig: RollupOptions = {
-  input: `${config.rollup.project_root}/${config.rollup.app.input}`,
+  input: `${projectRoot}/${config.builder!.prebuilding!.app.input_file}`,
   output: {
     format: 'esm',
-    file: `${config.rollup.output_dir}/${config.rollup.app.output}`,
+    file: `${prebuildDir}/${config.builder!.prebuilding!.app.output_file}`,
     sourcemap: mode === 'development',
   },
   perf: true,
@@ -35,20 +41,20 @@ export const rollupConfig: RollupOptions = {
     resolve({
       extensions: ['.ts', '.js'],
     }),
-    //handleVendorFiles(),
+    handleVendorFiles(),
     // Extract CSS and apply PostCSS transformations
     postcss({
       plugins: postcssConfig.options.postcssOptions.plugins,
-      extract: config.rollup.styles.output,
+      extract: config.builder!.prebuilding!.styles.output_file,
       sourceMap: mode === 'development',
       modules: false,
       autoModules: false,
-      use: []
+      use: [],
     }),
     copy(copyOptions),
     // Use SWC for transpiling TypeScript
     swc({
-      swc: swcOptions
+      swc: swcOptions,
     }),
   ],
 }

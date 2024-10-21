@@ -1,11 +1,13 @@
-import postcssLightningcss from "postcss-lightningcss";
+import postcssLightningcss from 'postcss-lightningcss'
 import tailwindcss from 'tailwindcss'
-import postcssImport from "postcss-import";
+import postcssImport from 'postcss-import'
 import postcssAdvancedVariables from 'postcss-advanced-variables'
-import postcssColorModFunction from "postcss-color-mod-function";
+import postcssColorModFunction from 'postcss-color-mod-function'
 
-import { getBuildToml } from "./configuration";
-const mode = process.env.NODE_ENV || 'development';
+import { loadConfig } from './handle_config'
+const config = await loadConfig()
+
+const mode = process.env.NODE_ENV || 'development'
 
 const postcssConfig = {
   options: {
@@ -18,15 +20,15 @@ const postcssConfig = {
         postcssColorModFunction(),
         postcssLightningcss({
           //@ts-ignore
-          browsers: getBuildToml().build.target,
+          browsers: config.builder!.compilation_target,
           lightningcssOptions: {
             minify: mode === 'production',
             cssModules: false,
-          }
-        })
-      ]
-    }
-  }
+          },
+        }),
+      ],
+    },
+  },
 }
 
 export default postcssConfig

@@ -1,27 +1,30 @@
 import { setupTweego, Tweenode } from 'tweenode'
 import chokidar from 'chokidar'
-import { rollupConfig } from './rollup_config'
 import { rollup } from 'rollup'
-import './dev_server'
 import { move } from 'fs-extra/esm'
 import { rm } from 'node:fs/promises'
-import { getBuildToml } from './configuration'
-const config = getBuildToml()!
-import { resolve } from 'node:path'
+
+import { loadConfig } from './handle_config'
+import './dev_server'
+import { rollupConfig } from './rollup_config'
+import { devEvents, updateState } from './dev_state'
+
 const mode = process.env.NODE_ENV || 'development'
-import { devEvents, updateState } from './dev_store'
+const config = await loadConfig()
 
 await setupTweego()
 const tweego = new Tweenode()
 
 const runTweego = async () => {
+  const distPath = config.builder!.dist!.output_dir
+
   const result = await tweego.process({
     input: {
-      storyDir: config.rollup_dist.index.input,
-      head: config.rollup_dist.index.input_head,
-      modules: `${config.rollup_dist.output_dir}/${config.rollup_dist.styles.output}`,
+      storyDir: config.builder!.dist!.story.input_dir,
+      head: config.builder!.dist!.story.html_head,
+      modules: `${distPath}/${config.builder!.dist!.styles.output_dir}`,
       additionalFlags: [
-        `${config.rollup_dist.output_dir}/${config.rollup_dist.scripts.output}`,
+        `${distPath}/${config.builder!.dist!.scripts.output_dir}`,
       ],
     },
     output: {
@@ -32,43 +35,49 @@ const runTweego = async () => {
   return result
 }
 const runRollup = async () => {
+  //console.log(config)
   const rl = await rollup(rollupConfig)
   rl.write({
     format: 'esm',
-    file: `${config.rollup.output_dir}/${config.rollup.app.output}`,
+    file: `${config.builder!.prebuilding!.prebuilding_dir}/${
+      config.builder!.prebuilding!.app.output_file
+    }`,
     sourcemap: mode === 'development',
   })
   return { rollupObj: rl, duration: Math.round(rl.getTimings!()['# BUILD'][0]) }
 }
 
 const moveFiles = async () => {
-  await rm(config.rollup_dist.output_dir, { recursive: true })
+  const prebuildConfig = config.builder!.prebuilding!
+  const distConfig = config.builder!.dist!
+
+  await rm(distConfig.output_dir, { recursive: true })
 
   try {
     await move(
-      `${config.rollup.output_dir}/${config.rollup_dist.media.input}`,
-      `${config.rollup_dist.output_dir}/${config.rollup_dist.media.output}`
+      `${prebuildConfig.prebuilding_dir}/${distConfig.media.input_dir}`,
+      `${distConfig.output_dir}/${distConfig.media.output_dir}`
     )
   } catch (error) {
-    console.log(error)
+    console.log(`Failed to move media:\n${error}`)
   }
 
   try {
     await move(
-      `${config.rollup.output_dir}/${config.rollup_dist.styles.input}`,
-      `${config.rollup_dist.output_dir}/${config.rollup_dist.styles.output}`
+      `${prebuildConfig.prebuilding_dir}/${distConfig.styles.input_dir}`,
+      `${distConfig.output_dir}/${distConfig.styles.output_dir}`
     )
   } catch (error) {
-    console.log(error)
+    console.log(`Failed to move styles:\n${error}`)
   }
 
   try {
     await move(
-      `${config.rollup.output_dir}/${config.rollup_dist.scripts.input}`,
-      `${config.rollup_dist.output_dir}/${config.rollup_dist.scripts.output}`
+      `${prebuildConfig.prebuilding_dir}/${distConfig.scripts.input_dir}`,
+      `${distConfig.output_dir}/${distConfig.scripts.output_dir}`
     )
   } catch (error) {
-    console.log(error)
+    console.log(`Failed to move scripts:\n${error}`)
   }
 }
 
@@ -91,7 +100,7 @@ build().then(firstResult => {
   updateState(firstResult)
 
   chokidar
-    .watch('./src/', {
+    .watch(config.builder!.prebuilding!.project_root, {
       ignoreInitial: true,
       awaitWriteFinish: {
         pollInterval: 50,
