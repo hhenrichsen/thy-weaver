@@ -91,7 +91,7 @@ app.get(
         throwServerLog(`Message from client: ${event.data}`)
       },
       onClose: () => {
-        throwServerLog('Connecting with client lost')
+        throwServerLog('Connection with client lost')
       },
       onOpen(event, ws) {
         ws.send('Hello from server!')

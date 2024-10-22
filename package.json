@@ -1,15 +1,17 @@
 {
   "name": "thy-weaver",
   "version": "1.0.0",
-  "description": "",
+  "description": "A starter template for a modern Twine development workflow",
   "main": "index.ts",
   "scripts": {
-    "dev": "bunx cross-env NODE_ENV=development bun .build/run_dev.ts",
-    "builderDev": "bunx cross-env NODE_ENV=development bun --watch .build/run_dev.ts",
-    "build": "bunx cross-env NODE_ENV=production bun .build/run_build.ts"
+    "dev": "bun cross-env NODE_ENV=development bun .build/run_dev.ts",
+    "dev:withProd": "bun cross-env NODE_ENV=production bun .build/run_dev.ts",
+    "build": "bun cross-env NODE_ENV=production bun .build/run_build.ts",
+    "build:withDev": "bun cross-env NODE_ENV=development bun .build/run_build.ts",
+    "builderDev": "bun cross-env NODE_ENV=development bun --watch .build/run_dev.ts"
   },
   "keywords": [],
-  "author": "",
+  "author": "greatsquare0",
   "license": "MIT",
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.3.0",

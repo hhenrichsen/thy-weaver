@@ -8,7 +8,7 @@ interface BuilderOptions {
    */
   watcherDelay: number
   /**
-   * See https://browsersl.ist/ for valid targets, don't affect  SugarCube pre-existing code
+   * See https://browsersl.ist/ for valid targets, doesn't affect SugarCube pre-existing code
    */
   compilation_target: string
   prebuilding?: {
@@ -71,6 +71,10 @@ interface BuilderOptions {
 interface DevServerOptions {
   hostname: string
   port: number
+  /**
+   * Enables Twine debug/test mode, some formats offer testing tools when enabled
+   */
+  twine_debug: boolean
 }
 
 export interface ThyWeaverConfig {
@@ -169,8 +173,6 @@ export const defaultConfig: Partial<ThyWeaverConfig> = {
 
 /**
  * Defines configs for use in ThyWeaver
- * @example
- *
  * @param config {ThyWeaverConfig}
  */
 export function defineConfig<T extends ThyWeaverConfig>(config: T): T {

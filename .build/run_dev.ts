@@ -44,6 +44,7 @@ const runTweego = async () => {
         modules: `${distPath}/${config.builder!.dist!.styles.output_dir}`,
         additionalFlags: [
           `${distPath}/${config.builder!.dist!.scripts.output_dir}`,
+          config.dev_server!.twine_debug ? '--test' : '',
         ],
       },
       output: {
@@ -90,6 +91,7 @@ build().then(async firstResult => {
   )
   chokidar
     .watch(config.builder!.prebuilding!.project_root, {
+      interval: config.builder!.watcherDelay,
       ignoreInitial: true,
       awaitWriteFinish: {
         pollInterval: 50,
