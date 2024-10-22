@@ -120,7 +120,7 @@ export const defaultConfig: Partial<ThyWeaverConfig> = {
       project_root: './src',
       prebuilding_dir: './.prebuilt',
       app: {
-        input_file: 'assets/index.ts',
+        input_file: 'assets/app/index.ts',
         output_file: 'scripts/app.bundle.js',
       },
       styles: {

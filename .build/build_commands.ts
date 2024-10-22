@@ -1,4 +1,4 @@
-import { rollup } from 'rollup'
+import { rollup, RollupBuild } from 'rollup'
 
 import { rollupConfig } from './rollup_config'
 import { loadConfig } from './handle_config'
@@ -18,17 +18,23 @@ export const getSpinner = () => {
 export const runRollup = async () => {
   const spinner = getSpinner()
   spinner.start('Running Rollup...')
-  const rl = await rollup(rollupConfig)
-  rl.write({
-    format: 'esm',
-    file: `${config.builder!.prebuilding!.prebuilding_dir}/${
-      config.builder!.prebuilding!.app.output_file
-    }`,
-    sourcemap: mode === 'development',
-  })
-  const duration = Math.round(rl.getTimings!()['# BUILD'][0])
-  spinner.succeed(`Rollup finished in ${pico.yellow(`${duration}ms`)}`)
-  return { rollupObj: rl, duration: duration }
+
+  rollup(rollupConfig)
+    .then(rl => {
+      rl.write({
+        format: 'esm',
+        file: `${config.builder!.prebuilding!.prebuilding_dir}/${
+          config.builder!.prebuilding!.app.output_file
+        }`,
+        sourcemap: mode === 'development',
+      })
+      const duration = Math.round(rl.getTimings!()['# BUILD'][0])
+      spinner.succeed(`Rollup finished in ${pico.yellow(`${duration}ms`)}`)
+      return { rollupObj: rl, duration: duration }
+    })
+    .catch(error => {
+      spinner.fail(`Rollup:\n${error}`)
+    })
 }
 
 export const moveFiles = async () => {
@@ -77,11 +83,13 @@ export const moveFiles = async () => {
       `Font files moved in ${pico.yellow(`${Date.now() - duration}ms`)}`
     )
   } catch (error) {
-    spinner.fail(
-      ` ${pico.bgRed(
-        pico.bold(' ERROR ')
-      )} Failed to move font files:\n${error}\n`
-    )
+    if (error.code !== 'ENOENT') {
+      spinner.fail(
+        ` ${pico.bgRed(
+          pico.bold(' ERROR ')
+        )} Failed to move font files:\n${error}\n`
+      )
+    }
   }
 
   try {
