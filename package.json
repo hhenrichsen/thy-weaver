@@ -31,8 +31,6 @@
     "ora": "^8.1.0",
     "picocolors": "^1.1.1",
     "postcss": "^8.4.47",
-    "postcss-advanced-variables": "^4.0.0",
-    "postcss-color-mod-function": "^3.0.3",
     "postcss-import": "^16.1.0",
     "postcss-lightningcss": "^1.0.1",
     "postcss-loader": "^8.1.1",
@@ -40,6 +38,7 @@
     "rollup": "^4.24.0",
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-postcss": "^4.0.2",
+    "sass": "^1.80.4",
     "tailwindcss": "^3.4.14",
     "tweenode": "^0.2.3",
     "typescript": "^5.6.3"

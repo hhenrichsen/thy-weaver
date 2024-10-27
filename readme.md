@@ -47,7 +47,8 @@ You can consider this a "spiritual successor" (Event though, as far as I know, N
 - [SWC](https://swc.rs/) (In place of Babel)
 - [PostCSS](https://postcss.org/) with:
   - [Tailwindcss](https://tailwindcss.com/)
-  - [Modern CSS support](https://github.com/onigoetz/postcss-lightningcss)
+  - [SASS](https://sass-lang.com)
+  - [Modern CSS support](https://github.com/onigoetz/postcss-lightningcss) (If you want to use vanilla css)
 
 ## Requirements
 

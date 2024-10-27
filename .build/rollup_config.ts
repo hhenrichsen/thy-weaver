@@ -63,7 +63,12 @@ export const rollupConfig: RollupOptions = {
       sourceMap: mode === 'development',
       modules: false,
       autoModules: false,
-      use: [],
+      //@ts-expect-error
+      use: {
+        sass: {
+          silenceDeprecations: ['legacy-js-api'],
+        },
+      },
     }),
     copy(copyOptions),
     // Use SWC for transpiling TypeScript
