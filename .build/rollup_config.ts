@@ -1,8 +1,9 @@
 import postcss from 'rollup-plugin-postcss'
-import type { RollupOptions } from 'rollup'
+import type { RollupOptions, WarningHandlerWithDefault } from 'rollup'
 import swc from '@rollup/plugin-swc'
 import resolve from '@rollup/plugin-node-resolve'
 import copy, { type CopyOptions } from 'rollup-plugin-copy'
+import pico from 'picocolors'
 
 import postcssConfig from './postcss_config'
 import swcOptions from './swc_config'
@@ -29,7 +30,20 @@ const copyOptions: CopyOptions = {
   ],
 }
 
+const onwarn: WarningHandlerWithDefault = (warning, log) => {
+  //Silence circular dependency warning
+  if (warning.code === 'CIRCULAR_DEPENDENCY') {
+    return undefined
+  }
+  log(
+    `\n\n${pico.inverse(pico.bold(' ROLLUP '))} ${pico.bgYellow(
+      pico.bold(' WARN ')
+    )} ${warning.message} \n`
+  )
+}
+
 export const rollupConfig: RollupOptions = {
+  onwarn,
   input: `${projectRoot}/${config.builder!.prebuilding!.app.input_file}`,
   output: {
     format: 'esm',

@@ -19,22 +19,19 @@ export const runRollup = async () => {
   const spinner = getSpinner()
   spinner.start('Running Rollup...')
 
-  rollup(rollupConfig)
-    .then(rl => {
-      rl.write({
-        format: 'esm',
-        file: `${config.builder!.prebuilding!.prebuilding_dir}/${
-          config.builder!.prebuilding!.app.output_file
-        }`,
-        sourcemap: mode === 'development',
-      })
-      const duration = Math.round(rl.getTimings!()['# BUILD'][0])
-      spinner.succeed(`Rollup finished in ${pico.yellow(`${duration}ms`)}`)
-      return { rollupObj: rl, duration: duration }
-    })
-    .catch(error => {
-      spinner.fail(`Rollup:\n${error}`)
-    })
+  const rl = await rollup(rollupConfig)
+
+  await rl.write({
+    format: 'esm',
+    file: `${config.builder!.prebuilding!.prebuilding_dir}/${
+      config.builder!.prebuilding!.app.output_file
+    }`,
+    sourcemap: mode === 'development',
+  })
+
+  const duration = Math.round(rl.getTimings!()['# BUILD'][0])
+  spinner.succeed(`Rollup finished in ${pico.yellow(`${duration}ms`)}`)
+  return { rollupObj: rl, duration: duration }
 }
 
 export const moveFiles = async () => {

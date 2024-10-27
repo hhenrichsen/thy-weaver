@@ -59,6 +59,9 @@ app.get(
   }),
   serveStatic({
     root: `${dist}/styles`,
+  }),
+  serveStatic({
+    root: dist,
   })
 )
 
