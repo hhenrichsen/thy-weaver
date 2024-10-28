@@ -12,7 +12,7 @@ const swcOptions: Options = {
     minify:
       mode === 'production'
         ? {
-            mangle: true,
+            mangle: false,
             format: {
               comments: 'all',
             },

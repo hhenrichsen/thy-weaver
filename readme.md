@@ -26,6 +26,7 @@
 ## Why?
 
 For some time now, I have been using [SugarCube Starter by nijikokun](https://github.com/nijikokun/sugarcube-starter), he did a amazing job, but coming from using Vite, the slowness of Webpack really started to bother me
+
 Then, as a bit of a challenge to myself, I wanted to remake it without Webpack
 You can consider this a "spiritual successor" (Event though, as far as I know, Nijikokun still is working on SG Starter), and it's mostly based on it
 
