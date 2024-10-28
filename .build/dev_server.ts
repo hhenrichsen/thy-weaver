@@ -1,12 +1,13 @@
 import { Hono } from 'hono'
-import { serve, type ServerWebSocket } from 'bun'
+import { serve, Server, type ServerWebSocket } from 'bun'
 import { createBunWebSocket, serveStatic } from 'hono/bun'
 import { transformFile as swcTransform } from '@swc/core'
 import pico from 'picocolors'
 
-import { devEvents, devState } from './dev_state'
+import { devState } from './dev_state'
 import { loadConfig } from './handle_config'
 import swcConfig from './swc_config'
+import { WSContext } from 'hono/ws'
 
 const config = await loadConfig()
 
@@ -86,29 +87,28 @@ app.get('/dev', async ctx => {
   })
 })
 
+let ws: WSContext<ServerWebSocket<undefined>> | undefined
+
 app.get(
   '/ws',
   upgradeWebSocket(c => {
     return {
-      onMessage(event, ws) {
+      onMessage(event) {
         throwServerLog(`Message from client: ${event.data}`)
       },
       onClose: () => {
         throwServerLog('Connection with client lost')
+        ws = undefined
       },
-      onOpen(event, ws) {
-        ws.send('Hello from server!')
+      onOpen(event, ctxWS) {
         throwServerLog('Client connected')
-
-        devEvents.once('builded', () => {
-          ws.send('update')
-        })
+        ws = ctxWS
       },
     }
   })
 )
 
-let server
+let server: Server
 
 try {
   server = serve({
@@ -122,4 +122,4 @@ try {
   throwServerError(error)
 }
 
-export { server }
+export { server, ws }

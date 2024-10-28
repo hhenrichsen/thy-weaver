@@ -2,9 +2,10 @@ import { setupTweego, Tweenode } from 'tweenode'
 import chokidar from 'chokidar'
 import spinner from 'ora'
 import { loadConfig } from './handle_config'
-import { devEvents, updateState } from './dev_state'
+import { updateState } from './dev_state'
 import { getSpinner, moveFiles, runRollup } from './build_commands'
 import pico from 'picocolors'
+import { ws } from './dev_server'
 
 const mode = process.env.NODE_ENV || 'development'
 const config = await loadConfig()
@@ -110,7 +111,10 @@ build().then(async firstResult => {
 
       const result = await build()
       updateState(result)
-      devEvents.emit('builded')
+
+      if (ws) {
+        ws.send('update')
+      }
 
       console.log(pico.yellow(pico.bold('Waiting for file changes...')), '\n')
     })

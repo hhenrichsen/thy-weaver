@@ -1,5 +1,3 @@
-import { EventEmitter } from 'node:events'
-
 interface DevState {
   html: undefined | string
 }
@@ -12,6 +10,4 @@ const updateState = (newValue: string) => {
   devState.html = newValue
 }
 
-const devEvents = new EventEmitter()
-
-export { updateState, devState, devEvents }
+export { updateState, devState }
