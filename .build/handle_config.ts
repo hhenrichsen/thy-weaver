@@ -2,6 +2,17 @@ import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { cwd } from 'node:process'
 
+interface AdditionalAsset {
+  /**
+   * Can be a file or dir
+   */
+  input: string
+  /**
+   * If input is a dir, the output needs to be one too, and vice versa
+   */
+  output: string
+}
+
 interface BuilderOptions {
   /**
    * To not overload the builder, a delay is needed for the next rebuilding
@@ -11,6 +22,7 @@ interface BuilderOptions {
    * See https://browsersl.ist/ for valid targets, doesn't affect SugarCube pre-existing code
    */
   compilation_target: string
+  additionalAssets?: AdditionalAsset[]
   prebuilding?: {
     project_root: string
     /**

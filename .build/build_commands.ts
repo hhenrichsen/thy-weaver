@@ -1,8 +1,8 @@
-import { rollup, RollupBuild } from 'rollup'
+import { rollup } from 'rollup'
 
 import { rollupConfig } from './rollup_config'
 import { loadConfig } from './handle_config'
-import { emptyDir, move, open, opendir, openSync, rm } from 'fs-extra'
+import { copy, move, rm } from 'fs-extra'
 import ora from 'ora'
 import pico from 'picocolors'
 
@@ -116,6 +116,29 @@ export const moveFiles = async () => {
   } catch (error) {
     spinner.fail(
       ` ${pico.bgRed(pico.bold(' ERROR '))} Failed to move scripts:\n${error}\n`
+    )
+  }
+
+  if (config.builder!.additionalAssets!.length > 0) {
+    const duration = Date.now()
+    spinner.start('Copying additional assets...')
+
+    for await (const asset of config.builder!.additionalAssets!) {
+      try {
+        spinner.text = `Copying ${asset.input}`
+
+        await copy(asset.input, asset.output, { overwrite: true })
+      } catch (error) {
+        spinner.fail(
+          ` ${pico.bgRed(
+            pico.bold(' ERROR ')
+          )} Failed to copy assets:\n${error}\n`
+        )
+        return
+      }
+    }
+    spinner.succeed(
+      `Additional assets copied in ${pico.yellow(`${Date.now() - duration}ms`)}`
     )
   }
 }

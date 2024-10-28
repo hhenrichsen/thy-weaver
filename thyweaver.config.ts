@@ -14,6 +14,7 @@ const config = defineConfig<ThyWeaverConfig>({
     ...defaultConfig.builder,
     compilation_target: 'defaults',
     watcherDelay: 1000,
+    additionalAssets: [],
   },
 })
 
