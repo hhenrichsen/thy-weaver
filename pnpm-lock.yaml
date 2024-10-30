@@ -90,8 +90,8 @@ importers:
         specifier: ^3.4.14
         version: 3.4.14
       tweenode:
-        specifier: ^0.2.3
-        version: 0.2.3
+        specifier: ^0.2.5
+        version: 0.2.5
       typescript:
         specifier: ^5.6.3
         version: 5.6.3
@@ -625,6 +625,9 @@ packages:
 
   caniuse-lite@1.0.30001669:
     resolution: {integrity: sha512-DlWzFDJqstqtIVx1zeSpIMLjunf5SmwOw0N2Ck/QSQdS8PLS4+9HrLaYei4w8BIAL7IB/UEDu889d8vhCTPA0w==}
+
+  caniuse-lite@1.0.30001675:
+    resolution: {integrity: sha512-/wV1bQwPrkLiQMjaJF5yUMVM/VdRPOCU8QZ+PmG6uW6DvYSrNY1bpwHI/3mOcUosLaJCzYDi5o91IQB51ft6cg==}
 
   chalk@2.4.2:
     resolution: {integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==}
@@ -1701,8 +1704,8 @@ packages:
   tslib@2.7.0:
     resolution: {integrity: sha512-gLXCKdN1/j47AiHiOkJN69hJmcbGTHI0ImLmbYLHykhgeN0jVGola9yVjFgzCUklsZQMW55o+dW7IXv3RCXDzA==}
 
-  tweenode@0.2.3:
-    resolution: {integrity: sha512-eI12Xb3ywf1JPS1Tozuyz6XkoGwcqt3Vqpn37hu2p5dIKHQmHCh877nnJtm7TF+lebWDMRCXh16mr52ZExDN5Q==}
+  tweenode@0.2.5:
+    resolution: {integrity: sha512-JKUYXOd4yL6RYDwgsXnBXZSx+y84e6v5T+577HdKhTat1wCQDygPX4WqChBeLBXNGkzRPmglZVSzWhOCJSCnow==}
 
   typescript@5.6.3:
     resolution: {integrity: sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==}
@@ -2020,7 +2023,7 @@ snapshots:
       '@module-federation/runtime-tools': 0.5.1
       '@rspack/binding': 1.0.5
       '@rspack/lite-tapable': 1.0.0
-      caniuse-lite: 1.0.30001669
+      caniuse-lite: 1.0.30001675
     optional: true
 
   '@rspack/lite-tapable@1.0.0':
@@ -2202,6 +2205,9 @@ snapshots:
       lodash.uniq: 4.5.0
 
   caniuse-lite@1.0.30001669: {}
+
+  caniuse-lite@1.0.30001675:
+    optional: true
 
   chalk@2.4.2:
     dependencies:
@@ -3259,7 +3265,7 @@ snapshots:
   tslib@2.7.0:
     optional: true
 
-  tweenode@0.2.3:
+  tweenode@0.2.5:
     dependencies:
       adm-zip: 0.5.16
       fs-extra: 11.2.0

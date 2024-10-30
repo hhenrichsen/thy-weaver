@@ -33,7 +33,7 @@ You can consider this a "spiritual successor" (Event though, as far as I know, N
 ## Features
 
 - Automatic Tweego setup (Thanks to [Tweenode](https://github.com/greatsquare0/tweenode))
-- Updated SugarCube and Harlowe (SC v2.37, Harlowe4-unstable)
+- Updated SugarCube and Harlowe (SC v2.37.3, Harlowe4-unstable)
 - Highly customizable, easy to configure
 - *Lighting fast* automatic builds
 - Local live reload server
@@ -77,7 +77,7 @@ Then place your new IFID on `:: StoryData` passage under [`./src/story/StoryData
 {
   "ifid": "<your-new-ifid>",
 	"format": "SugarCube",
-	"format-version": "2.37.0"
+	"format-version": "2.37.3"
 }
 ```
 
