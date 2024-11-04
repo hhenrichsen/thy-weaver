@@ -41,12 +41,10 @@ const runTweego = async () => {
     result = await tweego.process({
       input: {
         storyDir: config.builder!.dist!.story.input_dir,
-        head: config.builder!.dist!.story.html_head,
-        modules: `${distPath}/${config.builder!.dist!.styles.output_dir}`,
-        additionalFlags: [
-          `${distPath}/${config.builder!.dist!.scripts.output_dir}`,
-          config.dev_server!.twine_debug ? '--test' : '',
-        ],
+        htmlHead: config.builder!.dist!.story.html_head,
+        styles: `${distPath}/${config.builder!.dist!.styles.output_dir}`,
+        scripts: `${distPath}/${config.builder!.dist!.scripts.output_dir}`,
+        useTwineTestMode: config.dev_server!.twine_debug,
       },
       output: {
         mode: 'string',
