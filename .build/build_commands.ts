@@ -1,10 +1,10 @@
+import { copy, move, remove } from 'fs-extra/esm'
 import { rollup } from 'rollup'
-
-import { rollupConfig } from './rollup_config'
-import { loadConfig } from './handle_config'
-import { copy, move, rm } from 'fs-extra'
-import ora from 'ora'
 import pico from 'picocolors'
+import ora from 'ora'
+
+import { loadConfig } from './handle_config.ts'
+import { rollupConfig } from './rollup_config.ts'
 
 const config = await loadConfig()
 const mode = process.env.NODE_ENV || 'development'
@@ -42,7 +42,7 @@ export const moveFiles = async () => {
   try {
     spinner.start('Cleaning up ./dist...')
 
-    await rm(distConfig.output_dir, { recursive: true })
+    await remove(distConfig.output_dir)
     spinner.succeed('./dist clean')
   } catch (error) {
     spinner.fail(

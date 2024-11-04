@@ -2,7 +2,7 @@ import {
   defineConfig,
   defaultConfig,
   type ThyWeaverConfig,
-} from './.build/handle_config'
+} from './.build/handle_config.ts'
 
 const config = defineConfig<ThyWeaverConfig>({
   dev_server: {

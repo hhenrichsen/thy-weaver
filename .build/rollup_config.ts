@@ -5,10 +5,10 @@ import resolve from '@rollup/plugin-node-resolve'
 import copy, { type CopyOptions } from 'rollup-plugin-copy'
 import pico from 'picocolors'
 
-import postcssConfig from './postcss_config'
-import swcOptions from './swc_config'
-import { handleVendorFiles } from './handle_vendor_files'
-import { loadConfig } from './handle_config'
+import postcssConfig from './postcss_config.ts'
+import swcOptions from './swc_config.ts'
+import { handleVendorFiles } from './handle_vendor_files.ts'
+import { loadConfig } from './handle_config.ts'
 
 const mode = process.env.NODE_ENV || 'development'
 

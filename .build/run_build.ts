@@ -1,8 +1,8 @@
 import { setupTweego, Tweenode } from 'tweenode'
 import pico from 'picocolors'
 
-import { loadConfig } from './handle_config'
-import { getSpinner, moveFiles, runRollup } from './build_commands'
+import { loadConfig } from './handle_config.ts'
+import { getSpinner, moveFiles, runRollup } from './build_commands.ts'
 
 const mode = process.env.NODE_ENV || 'development'
 const config = await loadConfig()

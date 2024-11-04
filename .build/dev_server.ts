@@ -2,12 +2,12 @@ import { Hono } from 'hono'
 import { serve, Server, type ServerWebSocket } from 'bun'
 import { createBunWebSocket, serveStatic } from 'hono/bun'
 import { transformFile as swcTransform } from '@swc/core'
+import { WSContext } from 'hono/ws'
 import pico from 'picocolors'
 
-import { devState } from './dev_state'
-import { loadConfig } from './handle_config'
-import swcConfig from './swc_config'
-import { WSContext } from 'hono/ws'
+import { devState } from './dev_state.ts'
+import { loadConfig } from './handle_config.ts'
+import swcConfig from './swc_config.ts'
 
 const config = await loadConfig()
 

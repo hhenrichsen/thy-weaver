@@ -1,13 +1,15 @@
 import concat from 'concat'
-import { glob } from 'fast-glob'
+import fastGlob from 'fast-glob'
+const { glob } = fastGlob
+
 import swc from '@swc/core'
 import postcss from 'postcss'
 import { type Plugin } from 'rollup'
 import { outputFile } from 'fs-extra/esm'
 
-import swcOptions from './swc_config'
-import { loadConfig } from './handle_config'
-import postcssConfig from './postcss_config'
+import swcOptions from './swc_config.ts'
+import { loadConfig } from './handle_config.ts'
+import postcssConfig from './postcss_config.ts'
 
 const config = await loadConfig()
 const mode = process.env.NODE_ENV || 'development'
@@ -16,7 +18,7 @@ const projectRoot = config.builder!.prebuilding!.project_root
 const prebuildDir = config.builder!.prebuilding!.prebuilding_dir
 
 export const handleVendorFiles = async () => {
-  return <Plugin>{
+  return {
     name: 'handle-vendor-files',
     async buildStart() {
       const vendorScripts = await glob(
@@ -76,5 +78,5 @@ export const handleVendorFiles = async () => {
           }
         })
     },
-  }
+  } as Plugin
 }

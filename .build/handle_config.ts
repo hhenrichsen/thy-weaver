@@ -1,3 +1,4 @@
+import { pathToFileURL } from 'node:url'
 import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { cwd } from 'node:process'
@@ -120,6 +121,10 @@ export const loadConfig = async (
 
   if (!existsSync(configPath)) {
     return defaultConfig as ThyWeaverConfig
+  }
+
+  if (process.platform === 'win32') {
+    configPath = pathToFileURL(configPath).href
   }
 
   const imported = await import(configPath)

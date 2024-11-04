@@ -1,11 +1,11 @@
 import { setupTweego, Tweenode } from 'tweenode'
 import chokidar from 'chokidar'
-import spinner from 'ora'
-import { loadConfig } from './handle_config'
-import { updateState } from './dev_state'
-import { getSpinner, moveFiles, runRollup } from './build_commands'
 import pico from 'picocolors'
-import { ws } from './dev_server'
+
+import { getSpinner, moveFiles, runRollup } from './build_commands.ts'
+import { loadConfig } from './handle_config.ts'
+import { updateState } from './dev_state.ts'
+import { ws } from './dev_server.ts'
 
 const mode = process.env.NODE_ENV || 'development'
 const config = await loadConfig()

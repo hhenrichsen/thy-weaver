@@ -7,6 +7,7 @@
       "ESNext",
       "DOM"
     ],
+    
     "target": "ESNext",
     "module": "ESNext",
     "moduleDetection": "force",
@@ -14,7 +15,7 @@
     "allowJs": true,
     // Bundler mode
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": false,
+    "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
     // Best practices
@@ -28,4 +29,5 @@
     "emitDeclarationOnly": false,
     "sourceMap": false
   }
+  
 }

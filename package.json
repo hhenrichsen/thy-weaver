@@ -1,5 +1,6 @@
 {
   "name": "thy-weaver",
+  "type": "module",
   "version": "1.0.0",
   "description": "A starter template for a modern Twine development workflow",
   "main": "index.ts",
@@ -7,6 +8,7 @@
     "dev": "bun cross-env NODE_ENV=development bun .build/run_dev.ts",
     "dev:withProd": "bun cross-env NODE_ENV=production bun .build/run_dev.ts",
     "build": "bun cross-env NODE_ENV=production bun .build/run_build.ts",
+    "build:node": "cross-env NODE_ENV=production node --experimental-strip-types .build/run_build.ts",
     "build:withDev": "bun cross-env NODE_ENV=development bun .build/run_build.ts",
     "builderDev": "bun cross-env NODE_ENV=development bun --watch .build/run_dev.ts"
   },
@@ -44,4 +46,5 @@
     "tweenode": "^0.2.7",
     "typescript": "^5.6.3"
   }
+
 }

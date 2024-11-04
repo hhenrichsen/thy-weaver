@@ -1,5 +1,6 @@
 import { type Options } from '@swc/core'
-import { loadConfig } from './handle_config'
+
+import { loadConfig } from './handle_config.ts'
 const mode = process.env.NODE_ENV || 'development'
 
 const config = await loadConfig()
