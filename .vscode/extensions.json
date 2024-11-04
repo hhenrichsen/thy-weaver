@@ -7,5 +7,6 @@
     "yoavbls.pretty-ts-errors",
     "bradlc.vscode-tailwindcss",
     "cyrusfirheir.twee3-language-tools",
-  ]
+    "hirse.vscode-ungit"
+  ],
 }
