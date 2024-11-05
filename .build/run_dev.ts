@@ -2,7 +2,12 @@ import { setupTweego, Tweenode } from 'tweenode'
 import chokidar from 'chokidar'
 import pico from 'picocolors'
 
-import { getSpinner, moveFiles, runRollup } from './build_commands.ts'
+import {
+  getSpinner,
+  handleTweegoSetup,
+  moveFiles,
+  runRollup,
+} from './build_commands.ts'
 import { loadConfig } from './handle_config.ts'
 import { updateState } from './dev_state.ts'
 import { ws } from './dev_server.ts'
@@ -12,19 +17,6 @@ const config = await loadConfig()
 console.log(
   `\n${pico.bgMagenta(pico.bold(' ThyWeaver - Running in dev mode '))}ㅤ\n`
 )
-
-const handleTweegoSetup = async () => {
-  const spinner = getSpinner()
-  spinner.start('Setting-up Tweego')
-  try {
-    await setupTweego()
-    spinner.succeed('Tweego installed')
-  } catch (error) {
-    spinner.fail(
-      ` ${pico.bgRed(pico.bold(' ERROR '))} Failed to setup Tweego:\n${error}\n`
-    )
-  }
-}
 
 await handleTweegoSetup()
 const tweego = new Tweenode()

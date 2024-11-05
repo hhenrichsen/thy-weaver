@@ -1,4 +1,5 @@
 import { copy, move, remove } from 'fs-extra/esm'
+import { setupTweego } from 'tweenode'
 import { rollup } from 'rollup'
 import pico from 'picocolors'
 import ora from 'ora'
@@ -13,6 +14,19 @@ export const getSpinner = () => {
   return ora({
     prefixText: pico.bgBlue(pico.bold(' BUILDER ')),
   })
+}
+
+export const handleTweegoSetup = async () => {
+  const spinner = getSpinner()
+  spinner.start('Setting-up Tweego')
+  try {
+    await setupTweego()
+    spinner.succeed('Tweego installed')
+  } catch (error) {
+    spinner.fail(
+      ` ${pico.bgRed(pico.bold(' ERROR '))} Failed to setup Tweego:\n${error}\n`
+    )
+  }
 }
 
 export const runRollup = async () => {

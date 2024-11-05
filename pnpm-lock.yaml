@@ -90,8 +90,8 @@ importers:
         specifier: ^3.4.14
         version: 3.4.14
       tweenode:
-        specifier: ^0.2.7
-        version: 0.2.7
+        specifier: ^0.2.8
+        version: 0.2.8
       typescript:
         specifier: ^5.6.3
         version: 5.6.3
@@ -1704,8 +1704,8 @@ packages:
   tslib@2.7.0:
     resolution: {integrity: sha512-gLXCKdN1/j47AiHiOkJN69hJmcbGTHI0ImLmbYLHykhgeN0jVGola9yVjFgzCUklsZQMW55o+dW7IXv3RCXDzA==}
 
-  tweenode@0.2.7:
-    resolution: {integrity: sha512-dQvz99vJv93BmxeZKNHq+t/Kh1n9Z8yBJg/c96ab5hyTIpDQhGeuwEmxmG+PGWtQ0PLoI1hJLWSqwqUAEapnIA==}
+  tweenode@0.2.8:
+    resolution: {integrity: sha512-3LAB0V0Q47sm9k0FvNvzWtKG40quGvqAtm+AV5QjlCPLu33jbcW6rxdKQKRNDnnc+U358iNy07MJVVG76UZEjg==}
 
   typescript@5.6.3:
     resolution: {integrity: sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==}
@@ -3265,7 +3265,7 @@ snapshots:
   tslib@2.7.0:
     optional: true
 
-  tweenode@0.2.7:
+  tweenode@0.2.8:
     dependencies:
       adm-zip: 0.5.16
       fs-extra: 11.2.0

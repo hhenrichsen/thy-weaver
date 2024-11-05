@@ -2,7 +2,12 @@ import { setupTweego, Tweenode } from 'tweenode'
 import pico from 'picocolors'
 
 import { loadConfig } from './handle_config.ts'
-import { getSpinner, moveFiles, runRollup } from './build_commands.ts'
+import {
+  getSpinner,
+  handleTweegoSetup,
+  moveFiles,
+  runRollup,
+} from './build_commands.ts'
 
 const mode = process.env.NODE_ENV || 'development'
 const config = await loadConfig()
@@ -11,20 +16,11 @@ console.log(
   `\n${pico.bgMagenta(pico.bold(' ThyWeaver - Running in prod mode '))}\n`
 )
 
-const handleTweegoSetup = async () => {
-  const spinner = getSpinner()
-  spinner.start('Setting-up Tweego')
-  try {
-    await setupTweego()
-    spinner.succeed('Tweego installed')
-  } catch (error) {
-    spinner.fail(
-      ` ${pico.bgRed(pico.bold(' ERROR '))} Failed to setup Tweego:\n${error}\n`
-    )
-  }
-}
-
-const tweego = new Tweenode()
+await handleTweegoSetup()
+const tweego = new Tweenode({
+  detachProcess: false,
+  writeToLog: true,
+})
 
 const runTweego = async () => {
   const distPath = config.builder!.dist!.output_dir
