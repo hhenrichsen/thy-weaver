@@ -53,7 +53,7 @@ You can consider this a "spiritual successor" (Event though, as far as I know, N
 
 ## Requirements
 
-- [Bun](https://bun.sh) (Bun is a fast JS runtime, Deno and Node are currently incompatible, but planned)
+- [Bun](https://bun.sh) (Bun is a fast JS runtime, Node 22 support is currently experimental)
 - [pnpm](https://pnpm.io) (NPM probably works, but is untested, same for Bun package manager)
 
 ## Getting started
@@ -126,7 +126,7 @@ Check out the docs, available [here](about:blank) (Coming soon)
 
 ## Planned features
 
-- [ ] Add Node and Deno support 
+- [ ] Add Node (Currently experimental) and Deno support 
 - [ ] Add support for packaging `dist` directory.
 - [ ] Add support for compiling to Electron or Tauri application.
 
