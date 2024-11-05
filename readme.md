@@ -1,8 +1,5 @@
-
-<div align='center'>
-
 <!-- Logo created using MaterialDesign icons available at: https://github.com/Templarian/MaterialDesign -->
-
+<div align='center'>
   <img align='center' height='200px' alt='Logo' src='./logo.svg'>
 </div>
 
@@ -14,20 +11,28 @@
 
 <!-- Use this to create badges: -->
 
-<!-- <div align='center'>
-  <img alt="CI Workflow Status" src="">
-  <img alt="Build Workflow Status" src="">
-</div> -->
+<div align='center'>
+  <img alt="Dynamic JSON Badge" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fgreatsquare0%2Fthy-weaver%2Fmain%2Fpackage.json&query=%24.template-version&label=Template%20Version&color=magenta">
+  <a href='https://github.com/greatsquare0/thy-weaver/blob/main/TEMPLATE_LICENSE'> 
+    <img alt="template license: MIT" src="https://img.shields.io/badge/Template_Licence-MIT-blue">
+  </a> 
+  </div> 
+<br>
+
+<p align='center''>Runtime Support</p>
+<div align='center'>
+  <img alt="Static Badge" src="https://img.shields.io/badge/any_text-Supported-green?label=Bun">
+  <img alt="Static Badge" src="https://img.shields.io/badge/any_text-Experimental-yellow?label=Node%2022%20">
+  <img alt="Static Badge" src="https://img.shields.io/badge/any_text-Unsupported-red?label=Deno">
+</div> 
 
 ---
-
-> Now on beta!
-
 ## Why?
 
 For some time now, I have been using [SugarCube Starter by nijikokun](https://github.com/nijikokun/sugarcube-starter), he did a amazing job, but coming from using Vite, the slowness of Webpack really started to bother me
 
 Then, as a bit of a challenge to myself, I wanted to remake it without Webpack
+
 You can consider this a "spiritual successor" (Event though, as far as I know, Nijikokun still is working on SG Starter), and it's mostly based on it
 
 ## Features
@@ -49,14 +54,16 @@ You can consider this a "spiritual successor" (Event though, as far as I know, N
 - [PostCSS](https://postcss.org/) with:
   - [Tailwindcss](https://tailwindcss.com/)
   - [SASS](https://sass-lang.com)
-  - [Modern CSS support](https://github.com/onigoetz/postcss-lightningcss) (If you want to use vanilla css)
+  - [Modern CSS support](https://github.com/onigoetz/postcss-lightningcss) (If you want to use vanilla CSS)
 
 ## Requirements
 
 - [Bun](https://bun.sh) (Bun is a fast JS runtime, Node 22 support is currently experimental)
 - [pnpm](https://pnpm.io) (NPM probably works, but is untested, same for Bun package manager)
 
-## Getting started
+> For using with Node 22, highly recommend using [Fast Node Manager (fnm)](https://github.com/Schniz/fnm)
+
+## Getting started)
 
 It's recommended to use [degit](https://github.com/Rich-Harris/degit) to clone and detach from this repo or use the Github template
 
@@ -76,8 +83,8 @@ Then place your new IFID on `:: StoryData` passage under [`./src/story/StoryData
 :: StoryData
 {
   "ifid": "<your-new-ifid>",
-	"format": "SugarCube",
-	"format-version": "2.37.3"
+  "format": "SugarCube",
+  "format-version": "2.37.3"
 }
 ```
 
@@ -96,6 +103,8 @@ If you are new to it, check out [Nijikokun SugarCube Basics](https://github.com/
 | `pnpm run dev:withProd`  | Starts development server and watches `src/` directory in production mode (`NODE_ENV=production`) |
 | `pnpm run build`         | Compiles and bundles the story in the `dist/` directory                                           |
 | `pnpm run build:withDev` | Compiles and bundles the story in the `dist/` directory without production mode                   |
+
+> The same commands prefixed with `node:` have been added for Node 22 support (example: `pnpm run node:dev`)
 
 ### Directory Structure
 
@@ -120,17 +129,17 @@ thy-weaver
 
 ## Documentation
 
-Check out the docs, available [here](about:blank) (Coming soon)
+Check out the docs, [available here](https://github.com/greatsquare0/thy-weaver/wiki) (WIP)
 
 ---
 
 ## Planned features
 
-- [ ] Add Node (Currently experimental) and Deno support 
+- [ ] Add Node (22 support currently experimental) and Deno support 
 - [ ] Add support for packaging `dist` directory.
 - [ ] Add support for compiling to Electron or Tauri application.
 
-Want to suggest a feature? Create a Github issue with your suggestion
+Want to suggest a feature? [Create a Github issue with your suggestion](https://github.com/greatsquare0/thy-weaver/issues/new/choose)
 
 ## Helpful Resources
 
@@ -158,7 +167,3 @@ Third-Party Resources
 ## Huge thanks to:
 
 - [@Nijikokun](https://github.com/nijikokun), a lot of this project is based on his SugarCube Starter
-
-## License
-
-MIT
