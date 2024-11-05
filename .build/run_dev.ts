@@ -10,7 +10,7 @@ import {
 } from './build_commands.ts'
 import { loadConfig } from './handle_config.ts'
 import { updateState } from './dev_state.ts'
-import { ws } from './dev_server.ts'
+import { url, ws } from './dev_server.ts'
 
 const mode = process.env.NODE_ENV || 'development'
 const config = await loadConfig()
@@ -37,6 +37,7 @@ const runTweego = async () => {
         styles: `${distPath}/${config.builder!.dist!.styles.output_dir}`,
         scripts: `${distPath}/${config.builder!.dist!.scripts.output_dir}`,
         useTwineTestMode: config.dev_server!.twine_debug,
+        modules: ['./dist/fonts/'],
       },
       output: {
         mode: 'string',
@@ -72,13 +73,11 @@ const build = async (): Promise<string> => {
 
 build().then(async firstResult => {
   updateState(firstResult)
-  const { server } = await import('./dev_server')
+  const { server } = await import('./dev_server.ts')
 
   console.log(pico.yellow(pico.bold('Waiting for file changes...')))
   console.log(
-    `${pico.yellow(
-      pico.bold(`Dev Server available at ${pico.cyan(server.url.href)}`)
-    )}\n`
+    `${pico.yellow(pico.bold(`Dev Server available at ${pico.cyan(url)}`))}\n`
   )
   chokidar
     .watch(config.builder!.prebuilding!.project_root, {
@@ -95,7 +94,7 @@ build().then(async firstResult => {
       )
       console.log(
         `${pico.yellow(
-          pico.bold(`Dev Server available at ${pico.cyan(server.url.href)}`)
+          pico.bold(`Dev Server available at ${pico.cyan(url)}`)
         )}\n`
       )
 

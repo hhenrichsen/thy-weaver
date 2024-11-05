@@ -1,8 +1,9 @@
 import { Hono } from 'hono'
-import { serve, Server, type ServerWebSocket } from 'bun'
-import { createBunWebSocket, serveStatic } from 'hono/bun'
+import { serve, type ServerType } from '@hono/node-server'
+import { serveStatic } from '@hono/node-server/serve-static'
+import { createNodeWebSocket } from '@hono/node-ws'
 import { transformFile as swcTransform } from '@swc/core'
-import { WSContext } from 'hono/ws'
+import type { WSContext } from 'hono/ws'
 import pico from 'picocolors'
 
 import { devState } from './dev_state.ts'
@@ -36,13 +37,13 @@ const throwServerError = (error: string) => {
 }
 
 const app = new Hono()
-const { upgradeWebSocket, websocket } = createBunWebSocket<ServerWebSocket>()
+const { upgradeWebSocket, injectWebSocket } = createNodeWebSocket({ app })
 
 app.get('/', async ctx => {
   const html = devState.html !== undefined ? devState.html : placeholder
   const modifiedHtml = html.replace(
     '</head>',
-    `<script async src="${server.url.href}dev"></script>\n</head>`
+    `<script async src="${url}/dev"></script>\n</head>`
   )
   return new Response(modifiedHtml, {
     headers: {
@@ -87,7 +88,8 @@ app.get('/dev', async ctx => {
   })
 })
 
-let ws: WSContext<ServerWebSocket<undefined>> | undefined
+//let ws: WSContext<ServerWebSocket<undefined>> | undefined
+let ws: WSContext<unknown> | undefined
 
 app.get(
   '/ws',
@@ -108,18 +110,19 @@ app.get(
   })
 )
 
-let server: Server
+let server: ServerType
+const url = `http://${config.dev_server!.hostname}:${config.dev_server!.port}`
 
 try {
   server = serve({
     fetch: app.fetch,
-    //@ts-expect-error
-    websocket,
     hostname: config.dev_server!.hostname,
     port: config.dev_server!.port,
   })
+
+  injectWebSocket(server)
 } catch (error) {
   throwServerError(error)
 }
 
-export { server, ws }
+export { server, ws, url }
