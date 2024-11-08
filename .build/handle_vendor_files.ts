@@ -1,4 +1,3 @@
-import concat from 'concat'
 import fastGlob from 'fast-glob'
 const { glob } = fastGlob
 
@@ -7,6 +6,7 @@ import postcss from 'postcss'
 import { type Plugin } from 'rollup'
 import { outputFile } from 'fs-extra/esm'
 
+import { concat } from './build_helpers.ts'
 import swcOptions from './swc_config.ts'
 import { loadConfig } from './handle_config.ts'
 import postcssConfig from './postcss_config.ts'
