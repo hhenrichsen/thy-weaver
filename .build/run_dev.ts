@@ -1,4 +1,4 @@
-import { setupTweego, Tweenode } from 'tweenode'
+import { Tweenode } from 'tweenode'
 import chokidar from 'chokidar'
 import pico from 'picocolors'
 
@@ -107,4 +107,14 @@ build().then(async firstResult => {
 
       console.log(pico.yellow(pico.bold('Waiting for file changes...')), '\n')
     })
+})
+
+process.on('SIGTERM', () => {
+  tweego.kill()
+  process.exit()
+})
+
+process.on('SIGINT', () => {
+  tweego.kill()
+  process.exit()
 })

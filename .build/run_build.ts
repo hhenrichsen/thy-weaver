@@ -1,4 +1,4 @@
-import { setupTweego, Tweenode } from 'tweenode'
+import { Tweenode } from 'tweenode'
 import pico from 'picocolors'
 
 import { loadConfig } from './handle_config.ts'
