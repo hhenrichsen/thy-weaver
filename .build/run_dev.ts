@@ -19,7 +19,7 @@ console.log(
 )
 
 await handleTweegoSetup()
-const tweego = new Tweenode()
+const tweego = new Tweenode({ writeToLog: true })
 
 const runTweego = async () => {
   const spinner = getSpinner()

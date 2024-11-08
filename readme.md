@@ -38,7 +38,10 @@ You can consider this a "spiritual successor" (Event though, as far as I know, N
 ## Features
 
 - Automatic Tweego setup (Thanks to [Tweenode](https://github.com/greatsquare0/tweenode))
-- Updated SugarCube and Harlowe (SC v2.37.3, Harlowe4-unstable)
+- Includes updated story formats, like:
+  - SugarCube v2.37.3
+  - Harlowe v3.3.9 
+  - Chapbook v2.2.0
 - Highly customizable, easy to configure
 - *Lighting fast* automatic builds
 - Local live reload server

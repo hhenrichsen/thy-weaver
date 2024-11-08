@@ -18,7 +18,6 @@ console.log(
 
 await handleTweegoSetup()
 const tweego = new Tweenode({
-  detachProcess: false,
   writeToLog: true,
 })
 

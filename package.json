@@ -10,12 +10,10 @@
     "dev:withProd": "bun cross-env NODE_ENV=production bun .build/run_dev.ts",
     "build": "bun cross-env NODE_ENV=production bun .build/run_build.ts",
     "build:withDev": "bun cross-env NODE_ENV=development bun .build/run_build.ts",
-    
     "node:dev": "cross-env NODE_ENV=development node --experimental-strip-types .build/run_dev.ts",
     "node:dev:withProd": "cross-env NODE_ENV=production node --experimental-strip-types .build/run_dev.ts",
     "node:build": "cross-env NODE_ENV=production node --experimental-strip-types .build/run_build.ts",
     "node:build:withDev": "cross-env NODE_ENV=development node --experimental-strip-types .build/run_build.ts",
-
     "builderDev": "bun cross-env NODE_ENV=development bun --watch .build/run_dev.ts"
   },
   "keywords": [],
@@ -52,7 +50,7 @@
     "rollup-plugin-postcss": "^4.0.2",
     "sass": "^1.80.4",
     "tailwindcss": "^3.4.14",
-    "tweenode": "^0.2.8",
+    "tweenode": "^0.2.9",
     "typescript": "^5.6.3"
   }
 }
