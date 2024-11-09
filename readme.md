@@ -141,7 +141,7 @@ Check out the docs, [available here](https://github.com/greatsquare0/thy-weaver/
 
 ## Planned features
 
-- [x] ~~Add Node 22 supporte~~
+- [x] ~~Add Node 22 support~~
 - [ ] Add Deno support 
 - [ ] Add support for packaging `dist` directory.
 - [ ] Add support for compiling to Electron or Tauri application.
