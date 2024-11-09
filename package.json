@@ -2,7 +2,7 @@
   "name": "thy-weaver",
   "type": "module",
   "version": "0.0.0",
-  "template-version": "0.2.0-beta",
+  "template-version": "0.3.0-beta",
   "description": "A starter template for a modern Twine development workflow",
   "main": "index.ts",
   "scripts": {
@@ -10,10 +10,10 @@
     "dev:withProd": "bun cross-env NODE_ENV=production bun .build/run_dev.ts",
     "build": "bun cross-env NODE_ENV=production bun .build/run_build.ts",
     "build:withDev": "bun cross-env NODE_ENV=development bun .build/run_build.ts",
-    "node:dev": "cross-env NODE_ENV=development node --experimental-strip-types .build/run_dev.ts",
-    "node:dev:withProd": "cross-env NODE_ENV=production node --experimental-strip-types .build/run_dev.ts",
-    "node:build": "cross-env NODE_ENV=production node --experimental-strip-types .build/run_build.ts",
-    "node:build:withDev": "cross-env NODE_ENV=development node --experimental-strip-types .build/run_build.ts",
+    "node:dev": "cross-env NODE_ENV=development tsx .build/run_dev.ts",
+    "node:dev:withProd": "cross-env NODE_ENV=production tsx .build/run_dev.ts",
+    "node:build": "cross-env NODE_ENV=production tsx .build/run_build.ts",
+    "node:build:withDev": "cross-env NODE_ENV=development tsx .build/run_build.ts",
     "builderDev": "bun cross-env NODE_ENV=development bun --watch .build/run_dev.ts"
   },
   "keywords": [],
@@ -27,7 +27,6 @@
     "@rollup/plugin-swc": "^0.4.0",
     "@rollup/plugin-typescript": "^12.1.1",
     "@swc/core": "^1.9.1",
-    "@types/bun": "^1.1.13",
     "@types/fs-extra": "^11.0.4",
     "@types/twine-sugarcube": "^2.37.1",
     "browserslist": "^4.24.2",
@@ -49,6 +48,7 @@
     "rollup-plugin-postcss": "^4.0.2",
     "sass": "^1.80.6",
     "tailwindcss": "^3.4.14",
+    "tsx": "^4.19.2",
     "tweenode": "^0.2.9",
     "typescript": "^5.6.3"
   }

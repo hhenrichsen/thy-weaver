@@ -10,6 +10,9 @@
     "postcss": "css",
     "twee3-sugarcube-2": "html"
   },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },

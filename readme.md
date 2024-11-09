@@ -22,7 +22,7 @@
 <p align='center''>Runtime Support</p>
 <div align='center'>
   <img alt="Static Badge" src="https://img.shields.io/badge/any_text-Supported-green?label=Bun">
-  <img alt="Static Badge" src="https://img.shields.io/badge/any_text-Experimental-yellow?label=Node%2022%20">
+  <img alt="Static Badge" src="https://img.shields.io/badge/any_text-Supported-green?label=Node%2022%20">
   <img alt="Static Badge" src="https://img.shields.io/badge/any_text-Unsupported-red?label=Deno">
 </div> 
 
@@ -61,12 +61,12 @@ You can consider this a "spiritual successor" (Event though, as far as I know, N
 
 ## Requirements
 
-- [Bun](https://bun.sh) (Bun is a fast JS runtime, Node 22 support is currently experimental)
+- [Bun](https://bun.sh) or [Node 22](https://nodejs.org)
 - [pnpm](https://pnpm.io) (NPM probably works, but is untested, same for Bun package manager)
 
-> For using with Node 22, highly recommend using [Fast Node Manager (fnm)](https://github.com/Schniz/fnm)
+> For using with Node, highly recommend using [Fast Node Manager (fnm)](https://github.com/Schniz/fnm)
 
-## Getting started)
+## Getting started
 
 It's recommended to use [degit](https://github.com/Rich-Harris/degit) to clone and detach from this repo or use the Github template
 
@@ -92,9 +92,12 @@ Then place your new IFID on `:: StoryData` passage under [`./src/story/StoryData
 ```
 
 4. Start developing
+
 ```bash
-pnpm run dev
+pnpm run dev 
 ```
+> For node, prefix the command with `node:` (example: `pnpm run node:dev`)
+
 By default, this template comes setup for SugarCube
 If you are new to it, check out [Nijikokun SugarCube Basics](https://github.com/nijikokun/sugarcube-starter/wiki/SugarCube-Basics)
 
@@ -138,7 +141,8 @@ Check out the docs, [available here](https://github.com/greatsquare0/thy-weaver/
 
 ## Planned features
 
-- [ ] Add Node (22 support currently experimental) and Deno support 
+- [x] ~~Add Node 22 supporte~~
+- [ ] Add Deno support 
 - [ ] Add support for packaging `dist` directory.
 - [ ] Add support for compiling to Electron or Tauri application.
 
