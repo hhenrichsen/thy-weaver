@@ -4,9 +4,10 @@ const { glob } = fastGlob
 import swc from '@swc/core'
 import postcss from 'postcss'
 import { type Plugin } from 'rollup'
-import { outputFile } from 'fs-extra/esm'
+import { createLink, createSymlink, outputFile, copy } from 'fs-extra/esm'
+import { statSync } from 'node:fs'
 
-import { concat } from './build_helpers.ts'
+import { concat, getRuntime } from './build_helpers.ts'
 import swcOptions from './swc_config.ts'
 import { loadConfig } from './handle_config.ts'
 import postcssConfig from './postcss_config.ts'
@@ -77,6 +78,47 @@ export const handleVendorFiles = async () => {
             )
           }
         })
+    },
+  } as Plugin
+}
+
+interface Target {
+  src: string
+  dest: string
+}
+
+export interface CopyOptions {
+  targets: Target[]
+}
+
+export const smartCopy = async (copyOptions: CopyOptions) => {
+  return {
+    name: 'smart-copy',
+    async buildStart() {
+      for await (const entry of copyOptions.targets) {
+        if (mode == 'development' && getRuntime() !== 'bun') {
+          try {
+            await createLink(entry.src, entry.dest)
+          } catch (error) {
+            try {
+              createSymlink(
+                entry.src,
+                entry.dest,
+                statSync(entry.src).isDirectory() ? 'junction' : undefined
+              )
+            } catch (error) {
+              this.warn({
+                pluginCode: 'SMART_COPY_SYSLINK_ERROR',
+                message: `Failed to create fs link: ${entry.src} <-> ${entry.dest}\n${error}\nUsing copy as fallback`,
+                cause: error,
+              })
+              await copy(entry.src, entry.dest, { overwrite: true })
+            }
+          }
+        } else {
+          await copy(entry.src, entry.dest, { overwrite: true })
+        }
+      }
     },
   } as Plugin
 }

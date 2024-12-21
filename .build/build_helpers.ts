@@ -1,5 +1,6 @@
 import { outputFile, PathLike } from 'fs-extra/esm'
 import { readFile, stat } from 'node:fs/promises'
+import process from 'node:process'
 
 export const isFile = async (path: PathLike) => {
   return (await stat(path)).isFile()
@@ -27,4 +28,25 @@ export const concat = async (files: PathLike[], outputFilePath?: PathLike) => {
   } else {
     return result
   }
+}
+
+export const getRuntime = () => {
+  let runner: 'node' | 'bun' | 'deno' | 'unknown'
+  //@ts-ignore
+  if (typeof Deno !== 'undefined' && Deno.version) {
+    runner = 'deno'
+    //@ts-ignore
+  } else if (typeof Bun !== 'undefined' && Bun.version) {
+    runner = 'bun'
+  } else if (
+    typeof process !== 'undefined' &&
+    process.versions &&
+    process.versions.node
+  ) {
+    runner = 'node'
+  } else {
+    runner = 'unknown'
+  }
+
+  return runner
 }

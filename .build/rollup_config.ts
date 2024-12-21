@@ -2,12 +2,15 @@ import postcss from 'rollup-plugin-postcss'
 import type { RollupOptions, WarningHandlerWithDefault } from 'rollup'
 import swc from '@rollup/plugin-swc'
 import resolve from '@rollup/plugin-node-resolve'
-import copy, { type CopyOptions } from 'rollup-plugin-copy'
 import pico from 'picocolors'
 
 import postcssConfig from './postcss_config.ts'
 import swcOptions from './swc_config.ts'
-import { handleVendorFiles } from './handle_vendor_files.ts'
+import {
+  handleVendorFiles,
+  smartCopy,
+  type CopyOptions,
+} from './rollup_plugins.ts'
 import { loadConfig } from './handle_config.ts'
 
 const mode = process.env.NODE_ENV || 'development'
@@ -20,11 +23,11 @@ const prebuildDir = config.builder!.prebuilding!.prebuilding_dir
 const copyOptions: CopyOptions = {
   targets: [
     {
-      src: `${projectRoot}/${config.builder!.prebuilding!.media.input_dir}/**`,
+      src: `${projectRoot}/${config.builder!.prebuilding!.media.input_dir}/`,
       dest: `${prebuildDir}/${config.builder!.prebuilding!.media.output_dir}`,
     },
     {
-      src: `${projectRoot}/${config.builder!.prebuilding!.fonts.input_dir}/**`,
+      src: `${projectRoot}/${config.builder!.prebuilding!.fonts.input_dir}/`,
       dest: `${prebuildDir}/${config.builder!.prebuilding!.fonts.output_dir!}`,
     },
   ],
@@ -70,7 +73,8 @@ export const rollupConfig: RollupOptions = {
         },
       },
     }),
-    copy(copyOptions),
+    smartCopy(copyOptions),
+
     // Use SWC for transpiling TypeScript
     swc({
       swc: swcOptions,
