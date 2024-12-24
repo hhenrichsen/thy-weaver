@@ -1,4 +1,20 @@
 {
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "pnpm-lock.yaml": true
+  },
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.ts": "${capture}.js",
+    "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+    "*.jsx": "${capture}.js",
+    "*.tsx": "${capture}.ts",
+    "*.css": "${capture}.css.map",
+    "tsconfig.json": "tsconfig.*.json",
+    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, TEMPLATE_LICENSE, .node-version, pnpm-workspace.yaml, LICENSE"
+  },
   "twee3LanguageTools.storyformat.current": "sugarcube-2",
   "files.associations": {
     "*.css": "postcss"
