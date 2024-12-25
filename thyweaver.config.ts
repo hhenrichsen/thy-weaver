@@ -12,6 +12,7 @@ const config = defineConfig<ThyWeaverConfig>({
   },
   builder: {
     ...defaultConfig.builder,
+    enableFSLinkCopyOnDevMode: false,
     compilation_target: 'defaults',
     watcherDelay: 1000,
     additionalAssets: [],

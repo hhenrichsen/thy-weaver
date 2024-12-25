@@ -96,7 +96,10 @@ export const smartCopy = async (copyOptions: CopyOptions) => {
     name: 'smart-copy',
     async buildStart() {
       for await (const entry of copyOptions.targets) {
-        if (mode == 'development' && getRuntime() !== 'bun') {
+        if (
+          mode == 'development' &&
+          config.builder?.enableFSLinkCopyOnDevMode
+        ) {
           try {
             await createLink(entry.src, entry.dest)
           } catch (error) {

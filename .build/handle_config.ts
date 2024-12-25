@@ -17,10 +17,27 @@ interface AdditionalAsset {
 interface BuilderOptions {
   /**
    * To not overload the builder, a delay is needed for the next rebuilding
+   * @default 1000
    */
   watcherDelay: number
   /**
+   * To speed up developing, instead of copying the assets to `/dist`, thy-weaver can create an FS link to the file instead
+   *
+   * **Experimental, highly depended on OS and runtime**
+   *
+   *|      | Win | Linux | MacOS |
+   *|-----:|:---:|:-----:|:-----:|
+   *| Node |  ✓  |   ~   |   ~   |
+   *|  Bun |  ✕  |   ~   |   ~   |
+   *| Deno |  ~  |   ~   |   ~   |
+   *    ~ = Untested
+   *
+   * @default false
+   */
+  enableFSLinkCopyOnDevMode?: boolean
+  /**
    * See https://browsersl.ist/ for valid targets, doesn't affect SugarCube pre-existing code
+   * @default 'defaults'
    */
   compilation_target: string
   additionalAssets?: AdditionalAsset[]
